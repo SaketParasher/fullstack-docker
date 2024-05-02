@@ -1,0 +1,25 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon -L app.js",
+    "mongo:volume":"docker run --name mongo-db --rm --network goals-net -v goals-data:/data/db mongo",
+    "mongo:volume:auth":"docker run --name mongo-db --rm --network goals-net -v goals-data:/data/db -e MONGO_INITDB_ROOT_USERNAME=saket -e MONGO_INITDB_ROOT_PASSWORD=secret mongo",
+    "build:node-image":"docker build -t goals-node .",
+    "run:node-container":"docker run --name goals-backend --rm -p 80:80 --network goals-net goals-node",
+    "node:container-final":"docker run --name goals-backend -v \"%cd%\":/app -v logs:/app/logs -v /app/node_modules --env-file=./.env -p 80:80 --network goals-net --rm goals-node"
+  },
+  "author": "Maximilian Schwarzmüller / Academind GmbH",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.10.3",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon":"^3.1.0"
+  }
+}
