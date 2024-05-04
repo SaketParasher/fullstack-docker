@@ -21,7 +21,7 @@ Node backend app needs to expose port 80 for frontend app should also use goals-
 ~ use .env file to pass mongo db user name and password with --env-file flag, mongo URI should also be updated
 `mongodb://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@mongo-db:27017/course-goals?authSource=admin`
 
-~ run the node app container
+~ run the node app container with bind mount for live reload
 `docker run --name goals-backend -v \"%cd%\":/app -v logs:/app/logs -v /app/node_modules --env-file=./.env -p 80:80 --network goals-net --rm goals-node`
 
 # REACT FRONTEND
@@ -31,3 +31,8 @@ Node backend app needs to expose port 80 for frontend app should also use goals-
 
 ~ expose PORT 3000 and run the Container
 `docker run --name goals-frontend --rm -p 3000:3000 goals-react`
+
+~ create bind mount for src folder of react app for live load of code and use -e WATCHPACK_POLLING=true
+`docker run -e WATCHPACK_POLLING=true -v C:\<pathtoapp>\src:/app/src --name goals-frontend --rm -p 3000:3000 goals-react`
+
+~ for react-script > 5 use env -e WATCHPACK_POLLING=true else use -e CHOKIDAR_USEPOLLING=true
